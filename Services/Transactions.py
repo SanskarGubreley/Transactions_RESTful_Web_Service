@@ -47,6 +47,7 @@ def get_transaction(transaction_id):
             "parent_id": transaction.parent_id
         }
         return jsonify(response_data)
+    
     return jsonify({"error": "Transaction not found"}, 404)
 
 
@@ -73,7 +74,7 @@ def calculate_transaction_sum(transaction_id):
 
     # Using a recursive Common Table Expression (CTE) to calculate the sum of linked transactions
     query = text(
-        """
+        '''
         WITH RECURSIVE transaction_cte AS (
             SELECT id, amount FROM transaction WHERE id = :transaction_id
             UNION ALL
@@ -82,7 +83,7 @@ def calculate_transaction_sum(transaction_id):
             JOIN transaction t ON c.id = t.parent_id
         )
         SELECT SUM(amount) AS total FROM transaction_cte
-        """
+        '''
     )
     result = db.engine.execute(query, transaction_id=transaction_id)
 

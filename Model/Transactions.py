@@ -1,10 +1,5 @@
-from Controller.Transactions import app
-from flask_sqlalchemy import SQLAlchemy
+from DAOLayer.DataAcessObject import db
 
-
-# Configure the MySQL database connection
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:Admin@123@localhost:3306/yourdatabase'
-db = SQLAlchemy(app)
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
