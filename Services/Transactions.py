@@ -26,7 +26,6 @@ def create_transaction(transaction_id):
     # Create and insert the transaction into the database
     new_transaction = Transaction(id=transaction_id, amount=amount, type=type, parent_id=parent_id)
     db.session.add(new_transaction)
-    db.session.commit()
 
     return jsonify({"status": "ok"}, 200)
 
@@ -46,7 +45,7 @@ def get_transaction(transaction_id):
             "type": transaction.type,
             "parent_id": transaction.parent_id
         }
-        return jsonify(response_data)
+        return jsonify(response_data, 200)
     
     return jsonify({"error": "Transaction not found"}, 404)
 
@@ -91,7 +90,9 @@ def calculate_transaction_sum(transaction_id):
     row = result.fetchone()
 
     if row:
-        response_data = {"sum": row.total}
+        response_data = {
+                        "sum": row.total
+                        }
         return jsonify(response_data, 200)
     
     return jsonify({"error": "Transaction not found"}, 404)
